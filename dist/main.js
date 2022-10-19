@@ -1,0 +1,1 @@
+(()=>{let e=document.createElement("h1");e.textContent="Battleship Game",document.body.appendChild(e)})();
