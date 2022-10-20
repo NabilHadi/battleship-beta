@@ -1,6 +1,4 @@
-import { ship } from "./ship";
-
-export function gameboard(size) {
+export function gameboard(size, shipFactory) {
   let board = [];
   for (let x = 0; x < size; x++) {
     board.push([]);
@@ -10,7 +8,7 @@ export function gameboard(size) {
   }
 
   function placeShipAt(...coordinates) {
-    const s = ship(coordinates.length);
+    const s = shipFactory(coordinates.length);
     coordinates.forEach(([x, y]) => {
       board[x][y].ship = s;
     });

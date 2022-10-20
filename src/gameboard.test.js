@@ -1,5 +1,6 @@
 import { gameboard } from "./gameboard";
-import { describe, test, expect } from "@jest/globals";
+import { ship } from "./ship";
+import { describe, test, expect, jest } from "@jest/globals";
 
 describe("Gameboard", () => {
   test("Creates board with correct length", () => {
@@ -20,8 +21,16 @@ describe("Gameboard", () => {
     }
   });
 
+  test("Calling placeShipAt should call ship factory function", () => {
+    const fakeShipFactory = jest.fn();
+
+    let g = gameboard(9, fakeShipFactory);
+    g.placeShipAt([0, 0], [0, 1], [0, 2]);
+    expect(fakeShipFactory).toBeCalledWith(3);
+  });
+
   test("Calling placeShipAt function should update board state", () => {
-    let g = gameboard(9);
+    let g = gameboard(9, ship);
     g.placeShipAt([0, 0], [0, 1], [0, 2]);
     expect(g.board[0][0].ship).toBeDefined();
     expect(g.board[0][1].ship).toBeDefined();
@@ -31,7 +40,7 @@ describe("Gameboard", () => {
   });
 
   test("Calling receiveAttack function should update board state", () => {
-    let g = gameboard(9);
+    let g = gameboard(9, ship);
     expect(g.board[0][0].isAttacked).toBe(false);
     g.receiveAttack(0, 0);
     expect(g.board[0][0].isAttacked).toBe(true);
@@ -41,14 +50,14 @@ describe("Gameboard", () => {
   });
 
   test("Calling receiveAttack function should determine if attack hit a ship", () => {
-    let g = gameboard(9);
+    let g = gameboard(9, ship);
     g.placeShipAt([1, 1], [1, 2]);
     expect(g.receiveAttack(1, 3)).toBe(false);
     expect(g.receiveAttack(1, 1)).toBe(true);
   });
 
   test("attacking a ship should update ship state", () => {
-    let g = gameboard(9);
+    let g = gameboard(9, ship);
 
     g.placeShipAt([1, 1], [1, 2]);
     expect(g.board[1][1].ship.numOfHits).toBe(0);
@@ -67,7 +76,7 @@ describe("Gameboard", () => {
   });
 
   test("Should return correct isAllShipsSunk result", () => {
-    let g = gameboard(9);
+    let g = gameboard(9, ship);
     expect(g.isAllShipsSunk()).toBe(true);
 
     g.placeShipAt([2, 2], [3, 2]);
