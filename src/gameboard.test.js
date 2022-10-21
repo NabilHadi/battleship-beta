@@ -75,6 +75,16 @@ describe("Gameboard", () => {
     expect(g.board[1][2].ship.isSunk()).toBe(true);
   });
 
+  test("attacking a ship should update board state", () => {
+    let g = gameboard(9, ship);
+
+    g.placeShipAt([1, 1], [1, 2]);
+    expect(g.board[1][1].isAttacked).toBe(false);
+
+    g.receiveAttack(1, 1);
+    expect(g.board[1][1].isAttacked).toBe(true);
+  });
+
   test("Should return correct isAllShipsSunk result", () => {
     let g = gameboard(9, ship);
     expect(g.isAllShipsSunk()).toBe(true);

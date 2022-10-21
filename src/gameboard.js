@@ -15,11 +15,11 @@ export function gameboard(size, shipFactory) {
   }
 
   function receiveAttack(x, y) {
+    board[x][y].isAttacked = true;
     if (board[x][y].ship) {
       board[x][y].ship.hit();
       return true;
     }
-    board[x][y].isAttacked = true;
     return false;
   }
 
