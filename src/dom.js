@@ -73,6 +73,33 @@ const DOM = (function () {
     }
   }
 
+  let eventHandlers = {};
+
+  function setupClickHandlers(_onAttackFunc) {
+    // should ignore clicks outside squares
+    // should ignore clicks on attacked squared
+    eventHandlers.onAttackFunc = _onAttackFunc;
+    addAttackListener();
+  }
+
+  function addAttackListener() {
+    boardsContainer.addEventListener("click", onClickAttackHandler);
+  }
+
+  function removeAttackListener() {
+    boardsContainer.removeEventListener("click", onClickAttackHandler);
+  }
+
+  function onClickAttackHandler(e) {
+    if (!e.target.classList.contains("board-square")) return;
+    let sqaure = e.target;
+    eventHandlers.onAttackFunc(
+      Number(sqaure.dataset.owner),
+      sqaure.dataset.x,
+      sqaure.dataset.y
+    );
+  }
+
   function updateSquareState(ownerNum, x, y, boardSquareObj) {
     let playerGrid;
     if (ownerNum === 1) {
@@ -106,6 +133,7 @@ const DOM = (function () {
     displayBoards,
     setupClickHandlers,
     updateSquareState,
+    removeAttackListener,
   };
 })();
 
