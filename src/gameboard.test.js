@@ -65,6 +65,23 @@ describe("Gameboard", () => {
     expect(g.getSquareAt(1, 2).ship).not.toBeNull();
   });
 
+  test("getShipSquares function returns correct ship squars", () => {
+    let g = gameboard(9, ship);
+
+    g.placeShipAt([1, 1], [1, 2], [1, 3], [1, 4]);
+    g.placeShipAt([7, 7], [7, 6]);
+    let shipSquares = g.getShipSquares(g.getSquareAt(1, 1).ship);
+
+    shipSquares.forEach(([x, y]) => {
+      expect(g.getSquareAt(x, y).ship).toEqual(g.getSquareAt(1, 1).ship);
+      expect(g.getSquareAt(x, y).ship).toEqual(g.getSquareAt(1, 2).ship);
+      expect(g.getSquareAt(x, y).ship).toEqual(g.getSquareAt(1, 3).ship);
+      expect(g.getSquareAt(x, y).ship).toEqual(g.getSquareAt(1, 4).ship);
+      expect(g.getSquareAt(x, y).ship).not.toEqual(g.getSquareAt(7, 7).ship);
+      expect(g.getSquareAt(x, y).ship).not.toEqual(g.getSquareAt(7, 6).ship);
+    });
+  });
+
   test("attacking a ship should update ship state", () => {
     let g = gameboard(9, ship);
 

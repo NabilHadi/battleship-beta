@@ -38,11 +38,25 @@ export function gameboard(size, shipFactory) {
     return board[y][x];
   }
 
+  function getShipSquares(ship) {
+    let shipSquares = [];
+    board.forEach((row, yIndex) => {
+      row.forEach((square, xIndex) => {
+        if (square.ship === ship) {
+          shipSquares.push([xIndex, yIndex]);
+        }
+      });
+    });
+
+    return shipSquares;
+  }
+
   return {
     board,
     placeShipAt,
     receiveAttack,
     isAllShipsSunk,
     getSquareAt,
+    getShipSquares,
   };
 }
