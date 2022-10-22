@@ -2,10 +2,33 @@ import "./style.css";
 import { createElement, modal } from "./domUtils";
 
 const DOM = (function () {
+  // Root Element
   const root = createElement({ tag: "div", attributes: { id: "root" } });
   document.body.append(root);
-
   root.append(modal.getView());
+
+  // Create Boards container
+  let boardsContainer = createElement({
+    tag: "div",
+    classNames: ["boards-container"],
+  });
+  root.append(boardsContainer);
+
+  // Display Player 1 board
+  let player1GridBoard = createElement({
+    tag: "div",
+    classNames: ["board"],
+    attributes: { id: "player-1-board" },
+  });
+  boardsContainer.append(player1GridBoard);
+
+  // Display Player 2 board
+  let player2GridBoard = createElement({
+    tag: "div",
+    classNames: ["board"],
+    attributes: { id: "player-2-board" },
+  });
+  boardsContainer.append(player2GridBoard);
 
   async function getPlayersInfo() {
     return new Promise((res) => {
@@ -21,31 +44,10 @@ const DOM = (function () {
   }
 
   function displayBoards(player1, player2) {
-    // Create Boards container
-    let boardsContainer = createElement({
-      tag: "div",
-      classNames: ["boards-container"],
-    });
-    root.append(boardsContainer);
-
-    // Display Player 1 board
-    let player1GridBoard = createElement({
-      tag: "div",
-      classNames: ["board"],
-      attributes: { id: "player-1-board" },
-    });
-    boardsContainer.append(player1GridBoard);
     let player1Board = player1.gameboard;
-    renderBoard(player1GridBoard, player1Board, 1);
-
-    // Display Player 2 board
-    let player2GridBoard = createElement({
-      tag: "div",
-      classNames: ["board"],
-      attributes: { id: "player-2-board" },
-    });
-    boardsContainer.append(player2GridBoard);
     let player2Board = player2.gameboard;
+
+    renderBoard(player1GridBoard, player1Board, 1);
     renderBoard(player2GridBoard, player2Board, 2);
 
     function renderBoard(grid, gameboard, playerNum) {
@@ -71,10 +73,39 @@ const DOM = (function () {
     }
   }
 
+  function updateSquareState(ownerNum, x, y, boardSquareObj) {
+    let playerGrid;
+    if (ownerNum === 1) {
+      playerGrid = player1GridBoard;
+    } else if (ownerNum === 2) {
+      playerGrid = player2GridBoard;
+    } else {
+      return;
+    }
+
+    let square = Array.from(playerGrid.childNodes).find((node) => {
+      return node.dataset.x == x && node.dataset.y == y;
+    });
+
+    if (!square) return;
+
+    if (boardSquareObj.isAttacked) {
+      square.classList.add("attacked");
+    }
+    if (boardSquareObj.ship) {
+      square.classList.add("has-ship");
+      if (boardSquareObj.ship.isSunk()) {
+        square.classList.add("sunk-ship");
+      }
+    }
+  }
+
   return {
     modal,
     getPlayersInfo,
     displayBoards,
+    setupClickHandlers,
+    updateSquareState,
   };
 })();
 
