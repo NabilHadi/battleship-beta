@@ -86,3 +86,36 @@ img {
   opacity: 1;
   transform: scale(1);
 }
+
+.boards-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.board {
+  height: fit-content;
+  display: grid;
+  grid-template-columns: repeat(9, 30px);
+  grid-template-rows: repeat(9, 30px);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.board-square {
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.board-square.attacked {
+  background-color: gray;
+}
+
+.board-square.has-ship {
+  border-color: yellow;
+}
+
+.board-square.has-ship.sunk-ship {
+  background-color: red;
+  border-color: red;
+}
