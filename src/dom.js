@@ -30,6 +30,12 @@ const DOM = (function () {
   });
   boardsContainer.append(player2GridBoard);
 
+  let outputDiv = createElement({
+    tag: "div",
+    attributes: { id: "output-div" },
+  });
+  boardsContainer.append(outputDiv);
+
   async function getPlayersInfo() {
     return new Promise((res) => {
       res({
@@ -127,6 +133,10 @@ const DOM = (function () {
     }
   }
 
+  function displayMessage(str) {
+    outputDiv.textContent = str;
+  }
+
   return {
     modal,
     getPlayersInfo,
@@ -134,6 +144,7 @@ const DOM = (function () {
     setupClickHandlers,
     updateSquareState,
     removeAttackListener,
+    displayMessage,
   };
 })();
 
