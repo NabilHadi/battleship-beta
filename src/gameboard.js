@@ -1,23 +1,23 @@
 export function gameboard(size, shipFactory) {
   let board = [];
-  for (let x = 0; x < size; x++) {
+  for (let y = 0; y < size; y++) {
     board.push([]);
-    for (let y = 0; y < size; y++) {
-      board[x].push({ ship: null, isAttacked: false });
+    for (let x = 0; x < size; x++) {
+      board[y].push({ ship: null, isAttacked: false });
     }
   }
 
   function placeShipAt(...coordinates) {
     const s = shipFactory(coordinates.length);
     coordinates.forEach(([x, y]) => {
-      board[x][y].ship = s;
+      board[y][x].ship = s;
     });
   }
 
   function receiveAttack(x, y) {
-    board[x][y].isAttacked = true;
-    if (board[x][y].ship) {
-      board[x][y].ship.hit();
+    board[y][x].isAttacked = true;
+    if (board[y][x].ship) {
+      board[y][x].ship.hit();
       return true;
     }
     return false;
@@ -34,10 +34,15 @@ export function gameboard(size, shipFactory) {
     });
   }
 
+  function getSquareAt(x, y) {
+    return board[y][x];
+  }
+
   return {
     board,
     placeShipAt,
     receiveAttack,
     isAllShipsSunk,
+    getSquareAt,
   };
 }

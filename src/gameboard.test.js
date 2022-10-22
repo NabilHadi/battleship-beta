@@ -56,23 +56,32 @@ describe("Gameboard", () => {
     expect(g.receiveAttack(1, 1)).toBe(true);
   });
 
+  test("getSquareAt function should return correct square", () => {
+    let g = gameboard(9, ship);
+    expect(g.getSquareAt(1, 1).ship).toBeNull();
+    expect(g.getSquareAt(1, 2).ship).toBeNull();
+    g.placeShipAt([1, 1], [1, 2]);
+    expect(g.getSquareAt(1, 1).ship).not.toBeNull();
+    expect(g.getSquareAt(1, 2).ship).not.toBeNull();
+  });
+
   test("attacking a ship should update ship state", () => {
     let g = gameboard(9, ship);
 
     g.placeShipAt([1, 1], [1, 2]);
-    expect(g.board[1][1].ship.numOfHits).toBe(0);
-    expect(g.board[1][2].ship.numOfHits).toBe(0);
+    expect(g.getSquareAt(1, 1).ship.numOfHits).toBe(0);
+    expect(g.getSquareAt(1, 2).ship.numOfHits).toBe(0);
 
     g.receiveAttack(1, 1);
-    expect(g.board[1][1].ship.numOfHits).toBe(1);
-    expect(g.board[1][2].ship.numOfHits).toBe(1);
+    expect(g.getSquareAt(1, 1).ship.numOfHits).toBe(1);
+    expect(g.getSquareAt(1, 2).ship.numOfHits).toBe(1);
 
     g.receiveAttack(1, 2);
-    expect(g.board[1][1].ship.numOfHits).toBe(2);
-    expect(g.board[1][2].ship.numOfHits).toBe(2);
+    expect(g.getSquareAt(1, 1).ship.numOfHits).toBe(2);
+    expect(g.getSquareAt(1, 2).ship.numOfHits).toBe(2);
 
-    expect(g.board[1][1].ship.isSunk()).toBe(true);
-    expect(g.board[1][2].ship.isSunk()).toBe(true);
+    expect(g.getSquareAt(1, 1).ship.isSunk()).toBe(true);
+    expect(g.getSquareAt(1, 2).ship.isSunk()).toBe(true);
   });
 
   test("attacking a ship should update board state", () => {
