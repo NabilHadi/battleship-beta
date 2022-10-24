@@ -53,6 +53,15 @@ export function gameboard(size, shipFactory) {
     return shipSquares;
   }
 
+  function resetBoard() {
+    board.forEach((row) => {
+      row.forEach((square) => {
+        square.ship = null;
+        square.isAttacked = false;
+      });
+    });
+  }
+
   return {
     board,
     placeShipAt,
@@ -60,5 +69,6 @@ export function gameboard(size, shipFactory) {
     isAllShipsSunk,
     getSquareAt,
     getShipSquares,
+    resetBoard,
   };
 }
