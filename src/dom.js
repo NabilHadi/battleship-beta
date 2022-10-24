@@ -49,12 +49,6 @@ const DOM = (function () {
   });
   buttonsContainer.append(randomShipsBtn);
 
-  function addButtonsClickHandlers(randomPlacementBtnHandler) {
-    if (randomPlacementBtnHandler) {
-      randomShipsBtn.addEventListener("click", randomPlacementBtnHandler);
-    }
-  }
-
   async function getPlayersInfo() {
     return new Promise((res) => {
       res({
@@ -102,19 +96,35 @@ const DOM = (function () {
 
   let eventHandlers = {};
 
-  function setupClickHandlers(_onAttackFunc) {
-    // should ignore clicks outside squares
-    // should ignore clicks on attacked squared
+  function setupHandlers(_onAttackFunc, _randomPlacementBtnHandler) {
     eventHandlers.onAttackFunc = _onAttackFunc;
-    addAttackListener();
-  }
+    eventHandlers.randomPlacementBtnHandler = _randomPlacementBtnHandler;
 
-  function addAttackListener() {
-    boardsContainer.addEventListener("click", onClickAttackHandler);
-  }
+    eventHandlers = {
+      ...eventHandlers,
+      enableRandomPlacementBtn() {
+        randomShipsBtn.addEventListener(
+          "click",
+          eventHandlers.randomPlacementBtnHandler
+        );
+      },
 
-  function removeAttackListener() {
-    boardsContainer.removeEventListener("click", onClickAttackHandler);
+      disableRandomPlacementBtn() {
+        randomShipsBtn.removeEventListener(
+          "click",
+          eventHandlers.randomPlacementBtnHandler
+        );
+      },
+
+      enableAttackListener() {
+        boardsContainer.addEventListener("click", onClickAttackHandler);
+      },
+
+      disableAttackListener() {
+        boardsContainer.removeEventListener("click", onClickAttackHandler);
+      },
+    };
+    return eventHandlers;
   }
 
   function onClickAttackHandler(e) {
@@ -169,12 +179,10 @@ const DOM = (function () {
   return {
     modal,
     getPlayersInfo,
+    setupHandlers,
     displayBoards,
-    setupClickHandlers,
     updateSquareState,
-    removeAttackListener,
     displayMessage,
-    addButtonsClickHandlers,
     clearBoard,
   };
 })();
