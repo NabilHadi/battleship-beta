@@ -19,13 +19,30 @@ export function computerPlayer() {
 
   return {
     ...proto,
-    chooseCoordinates(enemyGameboard) {
-      let coords = getRandomCoordinates(9);
-      while (enemyGameboard.getSquareAt(coords.x, coords.y).isAttacked) {
-        coords = getRandomCoordinates(9);
+    nextMoves: [],
+    chooseCoordinates(canAttackFunc) {
+      let coords = this.nextMoves.pop();
+      if (!coords) coords = getRandomCoordinates(9);
+      while (!canAttackFunc(coords.x, coords.y)) {
+        coords = this.nextMoves.pop();
+        if (!coords) coords = getRandomCoordinates(9);
       }
 
       return coords;
+    },
+    chooseAdjacentCoordinates({ x, y }, canAttackFunc) {
+      if (canAttackFunc(x + 1, y)) {
+        this.nextMoves.push({ x: x + 1, y });
+      }
+      if (canAttackFunc(x - 1, y)) {
+        this.nextMoves.push({ x: x - 1, y });
+      }
+      if (canAttackFunc(x, y - 1)) {
+        this.nextMoves.push({ x, y: y - 1 });
+      }
+      if (canAttackFunc(x, y + 1)) {
+        this.nextMoves.push({ x, y: y + 1 });
+      }
     },
   };
 }
