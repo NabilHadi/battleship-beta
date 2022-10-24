@@ -35,7 +35,9 @@ export function gameboard(size, shipFactory) {
   }
 
   function getSquareAt(x, y) {
-    return board[y][x];
+    if (board[y]) {
+      return board[y][x];
+    }
   }
 
   function getShipSquares(ship) {
