@@ -24,10 +24,9 @@ img {
 #root {
   height: 100%;
   width: 100%;
-  display: flex;
-  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr max-content 1fr;
   align-items: center;
-  justify-content: center;
 }
 
 .modal {
@@ -90,6 +89,7 @@ img {
 }
 
 .boards-container {
+  grid-column: 2/3;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 5rem;
@@ -131,4 +131,8 @@ img {
 .board-square.has-ship.sunk-ship {
   background-color: red;
   border-color: red;
+}
+.buttons-container {
+  grid-column: 1/2;
+  grid-row: 1/2;
 }

@@ -36,6 +36,25 @@ const DOM = (function () {
   });
   boardsContainer.append(outputDiv);
 
+  const buttonsContainer = createElement({
+    tag: "div",
+    classNames: ["buttons-container"],
+  });
+  root.append(buttonsContainer);
+
+  const randomShipsBtn = createElement({
+    tag: "button",
+    classNames: ["btn", "clickable"],
+    textContent: "Random Placement",
+  });
+  buttonsContainer.append(randomShipsBtn);
+
+  function addButtonsClickHandlers(randomPlacementBtnHandler) {
+    if (randomPlacementBtnHandler) {
+      randomShipsBtn.addEventListener("click", randomPlacementBtnHandler);
+    }
+  }
+
   async function getPlayersInfo() {
     return new Promise((res) => {
       res({
@@ -145,6 +164,7 @@ const DOM = (function () {
     updateSquareState,
     removeAttackListener,
     displayMessage,
+    addButtonsClickHandlers,
   };
 })();
 
