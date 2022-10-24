@@ -158,6 +158,14 @@ const DOM = (function () {
     outputDiv.textContent = str;
   }
 
+  function clearBoard(ownerNum) {
+    Array.from(
+      document.querySelectorAll(`div[data-owner="${ownerNum}"]`)
+    ).forEach((square) => {
+      square.classList.remove("has-ship", "attacked");
+    });
+  }
+
   return {
     modal,
     getPlayersInfo,
@@ -167,6 +175,7 @@ const DOM = (function () {
     removeAttackListener,
     displayMessage,
     addButtonsClickHandlers,
+    clearBoard,
   };
 })();
 
