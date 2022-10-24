@@ -73,20 +73,22 @@ const DOM = (function () {
     let player2Board = player2.gameboard;
 
     renderBoard(player1GridBoard, player1Board, 1);
-    renderBoard(player2GridBoard, player2Board, 2);
+    renderBoard(player2GridBoard, player2Board, 2, true);
 
-    function renderBoard(grid, gameboard, playerNum) {
+    function renderBoard(grid, gameboard, playerNum, hide) {
       for (let y = gameboard.board.length - 1; y >= 0; y--) {
         for (let x = 0; x < gameboard.board[y].length; x++) {
           let classes = [];
-          if (gameboard.getSquareAt(x, y).isAttacked) classes.push("attacked");
-          if (gameboard.getSquareAt(x, y).ship) {
-            classes.push("has-ship");
-            if (gameboard.getSquareAt(x, y).ship.isSunk()) {
-              classes.push("sunk-ship");
+          if (!hide) {
+            if (gameboard.getSquareAt(x, y).isAttacked)
+              classes.push("attacked");
+            if (gameboard.getSquareAt(x, y).ship) {
+              classes.push("has-ship");
+              if (gameboard.getSquareAt(x, y).ship.isSunk()) {
+                classes.push("sunk-ship");
+              }
             }
           }
-
           let square = createElement({
             tag: "div",
             classNames: ["board-square", ...classes],
